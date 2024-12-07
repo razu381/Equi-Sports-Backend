@@ -34,6 +34,12 @@ async function run() {
       res.send(result);
       console.log("All equipments data was requested");
     });
+    //Get products from database for home only and only 6 products
+    app.get("/equipments/for-home", async (req, res) => {
+      let result = await equipmentsCollection.find().limit(6).toArray();
+      res.send(result);
+      console.log("All equipments data was requested");
+    });
     //get single product from database
     app.get("/equipments/:id", async (req, res) => {
       let id = req.params.id;
