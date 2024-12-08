@@ -24,7 +24,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    //await client.connect();
     //database info
     const database = client.db("equipments");
     const equipmentsCollection = database.collection("equipments");
@@ -33,6 +33,14 @@ async function run() {
       let result = await equipmentsCollection.find().toArray();
       res.send(result);
       console.log("All equipments data was requested");
+    });
+    //Get muy products from database
+    app.get("/my-equipments/:email", async (req, res) => {
+      let userEmail = req.params.email;
+      let query = { email: userEmail };
+      let result = await equipmentsCollection.find(query).toArray();
+      res.send(result);
+      console.log("My equipments data was requested");
     });
     //Get products from database for home only and only 6 products
     app.get("/equipments/for-home", async (req, res) => {
