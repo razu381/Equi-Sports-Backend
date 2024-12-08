@@ -34,7 +34,7 @@ async function run() {
       res.send(result);
       console.log("All equipments data was requested");
     });
-    //Get muy products from database
+    //Get muy products from database for my equipment page
     app.get("/my-equipments/:email", async (req, res) => {
       let userEmail = req.params.email;
       let query = { email: userEmail };
@@ -101,6 +101,18 @@ async function run() {
         options
       );
       res.send(result);
+    });
+    //delete product from database
+    app.delete("/equipments/:id", async (req, res) => {
+      let id = req.params.id;
+      let query = { _id: new ObjectId(id) };
+      // if (!ObjectId.isValid(id)) {
+      //   return res.status(400).send({ error: "Invalid ID format" });
+      // }
+      let result = await equipmentsCollection.deleteOne(query);
+
+      res.send(result);
+      console.log("Product deleted");
     });
   } finally {
     // Ensures that the client will close when you finish/error
