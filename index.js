@@ -16,7 +16,7 @@ const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
-    strict: true,
+    //strict: true,
     deprecationErrors: true,
   },
 });
@@ -106,13 +106,15 @@ async function run() {
     app.delete("/equipments/:id", async (req, res) => {
       let id = req.params.id;
       let query = { _id: new ObjectId(id) };
-      // if (!ObjectId.isValid(id)) {
-      //   return res.status(400).send({ error: "Invalid ID format" });
-      // }
       let result = await equipmentsCollection.deleteOne(query);
 
       res.send(result);
-      console.log("Product deleted");
+    });
+
+    //get all categories from the database
+    app.get("/categories", async (req, res) => {
+      let result = await equipmentsCollection.distinct("category");
+      res.send(result);
     });
   } finally {
     // Ensures that the client will close when you finish/error
